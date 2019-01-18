@@ -98,7 +98,7 @@ char *hash_table_retrieve(HashTable *ht, char *key)
 
   while (current_pair != NULL) {
     if (strcmp(current_pair->key, key) == 0) {
-      return current_pair;
+      return current_pair->value;
     }
     current_pair = current_pair->next;
   }
@@ -140,3 +140,4 @@ HashTable *hash_table_resize(HashTable *ht)
 
   return new_ht;
 }
+ 

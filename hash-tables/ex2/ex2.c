@@ -9,22 +9,25 @@ char **reconstruct_trip(Ticket **tickets, int length)
   HashTable *ht = create_hash_table(16);
   char **route = malloc(length * sizeof(char *));
 
-  for(int i =0; i<3; i++){ //Put the 3 tickets inside of the hashtable
+  for (int i = 0; i < length; i++)
+  {
     hash_table_insert(ht, tickets[i]->source, tickets[i]->destination);
   }
+  route[0] = hash_table_retrieve(ht, "NONE"); //find the first ticket with its source of NULL, it is the begining
 
-  LinkedPair *current = hash_table_retrieve(ht, "NULL"); //find the first ticket with its source of NULL
-  LinkedPair *last;
-  while(current->next != NULL){ //go through tickets until you find next of null which means you are at the final ticket
-     route = *strcat(*route, current->key); //try to concatenate all of the sources which should give all the airports
-    current = current->next; 
+  for (int i = 1; i < length; i++)
+  {              
+    //loop through other ticket using the destination of the prior index, sets destination as value at current loop index                                     
+    route[i] = hash_table_retrieve(ht, route[i - 1]); 
   }
+  destroy_hash_table(ht);
   return route;
 }
 
 void print_route(char **route, int length)
 {
-  for (int i = 0; i < length; i++) {
+  for (int i = 0; i < length; i++)
+  {
     printf("%s\n", route[i]);
   }
 }
