@@ -4,44 +4,23 @@
 #include "hashtable.h"
 #include "ex2.h"
 
-void insert(HashTable *ht, Ticket *tickets)
-{
-  unsigned int index = hash(tickets->source, ht->capacity);
-
-  ht->storage[index] = *tickets;
-}
-
-/****
-  djb2 hash function 
- ****/
-unsigned int hash(char *str, int max)
-{
-  unsigned long hash = 5381;
-  int c;
-  unsigned char *u_str = (unsigned char *)str;
-
-  while ((c = *u_str++))
-  {
-    hash = ((hash << 5) + hash) + c;
-  }
-
-  return hash % max;
-}
-
 char **reconstruct_trip(Ticket **tickets, int length)
 {
   HashTable *ht = create_hash_table(16);
   char **route = malloc(length * sizeof(char *));
 
-  Ticket *currentticket = tickets[0];
-  while(currentticket != NULL){
-    insert(ht, tickets[i]);
+  for(int i =0; i<3; i++){ //Put the 3 tickets inside of the hashtable
+    hash_table_insert(ht, tickets[i]->source, tickets[i]->destination);
   }
-  
+
+  LinkedPair *current = hash_table_retrieve(ht, "NULL"); //find the first ticket with its source of NULL
+  LinkedPair *last;
+  while(current->next != NULL){ //go through tickets until you find next of null which means you are at the final ticket
+     route = *strcat(*route, current->key); //try to concatenate all of the sources which should give all the airports
+    current = current->next; 
+  }
   return route;
 }
-
-
 
 void print_route(char **route, int length)
 {
@@ -49,10 +28,6 @@ void print_route(char **route, int length)
     printf("%s\n", route[i]);
   }
 }
-
-
-
-
 
 #ifndef TESTING
 int main(void)
