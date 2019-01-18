@@ -6,10 +6,24 @@
 Answer *get_indices_of_item_weights(int *weights, int length, int limit)
 {
   HashTable *ht = create_hash_table(16);
-
+  Answer *answer = malloc(sizeof(Answer));
   // YOUR CODE HERE
-  for (int i = 0; i < length; i++){
-    hash_table_insert(ht, weights[i], i);
+  for (int i = 0; i < length; i++)
+  {
+    int remainder = hash_table_retrieve(ht, limit - weights[i]); //check to see if differece between current val and limit is in table
+    if (remainder != -1)
+    { //if it is in table set current val and remainder as answer 1 and 2;
+     
+      answer->index_1 = i;
+      answer->index_2 = remainder; 
+      //remainder should be 2nd because the smaller number is to be 2nd, and to be able to be retrieved it had
+      //to already have been inserted,which means it came earlier in the array.
+      return answer;
+    }
+    else
+    {
+      hash_table_insert(ht, weights[i], i); //insert weight into table;
+    }
   }
   return NULL;
 }
