@@ -1,0 +1,4 @@
+DEBUG tests/ex2_tests.c:102: ----- RUNNING: ./tests/ex2_tests
+DEBUG tests/ex2_tests.c:96: 
+----- test_short_case
+Segmentation fault (core dumped)
